@@ -34,6 +34,7 @@
             <div class="form-group "style="clear:both">
                 <label asp-for="AssignedAccounts" class="control-label float-left"></label>
                 <input id="AssignedImages" hidden="hidden" asp-for="AssignedAccounts" class="form-control" />
+                 <a hidden="hidden" id="Replacable"></a>
                 <span asp-validation-for="AssignedAccounts" class="text-danger"></span>
             </div>
 
@@ -55,6 +56,20 @@
 <script>
 
     $(document).ready(function () {
+
+       
+        $.ajax({
+            url: '/Job/ReplaceItem',
+            type: "GET",
+            success: function (result) {
+                $('#Replacable').replaceWith(result);
+            }
+        });
+
+        //$('#Replacable').replaceWith("<a>123123</a>");
+           
+
+
         $('#AddFile').click(function () {
 
             //get Uploaded files
@@ -78,7 +93,7 @@
                 success: function (result) {
                     $('#AssignedImagesDiv').append(result);
                     //Add to Hiden input field a name of added file so you can keep track of what files are added to this object 
-                    $('#AssignedImagesTest').val($('#AssignedImagesTest').val() + ":" + $('#Item', $(result)).text());
+                    $('#AssignedImagesTest').val($('#AssignedImagesTest').val() + ":" + $('#ItemName', $(result)).text());
                     //Clear Input after adding file 
                     $('#files').val('');
                 },//when success append html body to page
@@ -92,7 +107,7 @@
     //Connect to Input field to set maximum number of files that you can upload at once 
     $("#image").on("change", function () {
         if ($("#image")[0].files.length > 2) {
-            alert("You can select only 2 images");
+            alert("Currently only first image will be uploaded to server");
         } else {
             $("#imageUploadForm").submit();
         }

@@ -52,5 +52,11 @@ namespace DataBase_Website.Controllers.DataBase
 
             return PartialView("ItemPartial", "QWER");
         }
+
+        [HttpGet]
+        public IActionResult ReplaceItem()
+        {
+            return PartialView("ItemAccountsPartial",_context.AccountModel.ToListAsync().Result);
+        }
     }
 }
