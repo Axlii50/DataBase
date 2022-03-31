@@ -1,0 +1,47 @@
+﻿@model DataBase_Website.Models.DataBaseModels.AccountModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <div>
+        @Html.DisplayFor(model => model.AccountName)
+    </div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Login)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Login)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+        @*<dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AccountName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AccountName)
+        </dd>*@
+        @if(Html.IsDebug())
+        {        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PrivateAccountKey)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PrivateAccountKey)
+        </dd>
+        }
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.PrivateAccountKey">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

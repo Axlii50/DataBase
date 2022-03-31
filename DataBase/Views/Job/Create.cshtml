@@ -1,0 +1,86 @@
+﻿@model DataBase_Website.Models.DataBaseModels.JobModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>AccountModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="JobId" class="control-label"></label>
+                <input hidden="hidden" asp-for="JobId" value="@Guid.NewGuid()" class="form-control" />
+                <span asp-validation-for="JobId" class="text-danger"></span>
+            </div>
+            <div class="form-group float-left">
+                <label asp-for="AssignedImages" class="control-label "></label>
+                <input id="AssignedImages" hidden="hidden" asp-for="AssignedImages" value="@Guid.NewGuid()" class="form-control" />
+                <div class="">
+                    <input id="files" name="files" type="file" class="float-left" size="1" />
+                    <div class="bg-dark rounded-pill float-left">
+                        <a id="AddFile" class=" text-white ml-2 mr-2">Dodaj</a>
+                    </div>
+                </div>
+                <br />
+                <div id="AssignedImagesDiv" class="float-left">
+
+                </div>
+                <span asp-validation-for="AssignedImages" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group" style="clear:both">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+        $(document).ready(function () {
+            $('#AddFile').click(function () {
+
+                //get Uploaded files
+                var fileUpload = $("#files").get(0);
+                var files = fileUpload.files;
+
+                // Create  a FormData object
+                var fileData = new FormData();
+
+                // if there are multiple files , loop through each files
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                $.ajax({
+                    url: '/Job/AddFile', //URL to upload files
+                    type: "POST", //as we will be posting files and other method POST is used
+                    processData: false, //remember to set processData and ContentType to false, otherwise you may get an error
+                    contentType: false,
+                    data: fileData,
+                    success: function (result) {
+                        $('#AssignedImagesDiv').append(result);
+                        //TODO Changing value of curently added images 
+                        $('#AssignedImages').val($('#AssignedImages').val() + $(''))
+                    },//when success append html body to page
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            });
+        });
+
+    </script>
+}

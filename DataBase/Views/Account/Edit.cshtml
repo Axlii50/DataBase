@@ -1,0 +1,70 @@
+﻿@model DataBase_Website.Models.DataBaseModels.AccountModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>AccountModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Login" class="control-label"></label>
+                <input asp-for="Login" class="form-control" />
+                <span asp-validation-for="Login" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" value="@Model.Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountName" class="control-label"></label>
+                <input asp-for="AccountName" class="form-control" />
+                <span asp-validation-for="AccountName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Permission" class="control-label"></label>
+                <select asp-for="Permission" class="form-control">
+                    @foreach (var item in EnumTypes.GetPermissionsTypes().Items)
+                    {
+                        @if (item.ToString() == "NULL")
+                            break;
+                        @if ((Permission)Enum.Parse(typeof(Permission), item.ToString()) == Model.Permission)
+                        {
+                            <option selected="selected">@item.ToString()</option>
+                        }
+                        else
+                        {
+                            <option>@item.ToString()</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="Permission" class="text-danger"></span>
+            </div>
+            @if (Html.IsDebug())
+            {
+                <div class="form-group">
+                    <label asp-for="PrivateAccountKey" class="control-label"></label>
+                    <input asp-for="PrivateAccountKey" value="@Model.PrivateAccountKey" class="form-control" />
+                    <span asp-validation-for="PrivateAccountKey" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

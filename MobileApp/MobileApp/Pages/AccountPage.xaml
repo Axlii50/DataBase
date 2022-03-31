@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.Page1">
+    <ContentPage.Content>
+        <StackLayout>
+            <ScrollView>
+                <StackLayout>
+                    <Image x:Name="Image1"  WidthRequest="150" HeightRequest="350" VerticalOptions="CenterAndExpand"></Image>
+                    <Image x:Name="Image2"  WidthRequest="300" HeightRequest="150" VerticalOptions="CenterAndExpand"></Image>
+                    <Image x:Name="Image3"  WidthRequest="300" HeightRequest="150" VerticalOptions="CenterAndExpand"></Image>
+                    <Image x:Name="Image4"  WidthRequest="300" HeightRequest="150" VerticalOptions="CenterAndExpand"></Image>
+                </StackLayout>
+            </ScrollView>
+            <Label Text="You are logged in!"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            
+                
+            
+            <Label x:Name="GuidLabel" VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand">
+                
+            </Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
