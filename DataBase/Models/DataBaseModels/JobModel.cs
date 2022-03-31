@@ -33,7 +33,7 @@ namespace DataBase_Website.Models.DataBaseModels
         //return all Assigned Accounts to this job
         public List<string> Accounts
         {
-            get => AssignedAccounts.Split(':').ToList<string>();
+            get => AssignedAccounts?.Split(':').ToList<string>();
         }
         #endregion
 
@@ -49,7 +49,7 @@ namespace DataBase_Website.Models.DataBaseModels
 
             string NewAssignedImagesString = String.Empty;
 
-            foreach (string x in Accounts)
+            foreach (string x in Images)
                 if (x != ImageName)
                     NewAssignedImagesString += $"{x}:";
 
@@ -59,7 +59,7 @@ namespace DataBase_Website.Models.DataBaseModels
         //return all Assigned Accounts to this job
         public List<string> Images
         {
-            get => AssignedImages.Split(':').ToList<string>();
+            get => AssignedImages?.Split(':').ToList<string>();
         }
         #endregion
 

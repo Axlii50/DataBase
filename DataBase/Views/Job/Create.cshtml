@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-12">
-        <form asp-action="Create" >
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="JobId" class="control-label"></label>
@@ -19,19 +19,24 @@
             </div>
             <div class="form-group float-left">
                 <label asp-for="AssignedImages" class="control-label "></label>
-                <input id="AssignedImages" hidden="hidden" asp-for="AssignedImages" value="@Guid.NewGuid()" class="form-control" />
+                <input id="AssignedImagesTest" hidden="hidden" asp-for="AssignedImages" value="test" class="form-control" />
                 <div class="">
-                    <input id="files" name="files" type="file" class="float-left" size="1" />
+                    <input id="files" type="file" class="float-left" size="1" />
                     <div class="bg-dark rounded-pill float-left">
-                        <a id="AddFile" class=" text-white ml-2 mr-2">Dodaj</a>
+                         <a id="AddFile" class=" text-white ml-2 mr-2">Dodaj</a>
                     </div>
                 </div>
                 <br />
-                <div id="AssignedImagesDiv" class="float-left">
-
-                </div>
+                <div id="AssignedImagesDiv" class="float-left">  </div>
                 <span asp-validation-for="AssignedImages" class="text-danger"></span>
             </div>
+
+            <div class="form-group "style="clear:both">
+                <label asp-for="AssignedAccounts" class="control-label float-left"></label>
+                <input id="AssignedImages" hidden="hidden" asp-for="AssignedAccounts" class="form-control" />
+                <span asp-validation-for="AssignedAccounts" class="text-danger"></span>
+            </div>
+
             <br />
             <div class="form-group" style="clear:both">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -47,40 +52,51 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <script>
+<script>
 
-        $(document).ready(function () {
-            $('#AddFile').click(function () {
+    $(document).ready(function () {
+        $('#AddFile').click(function () {
 
-                //get Uploaded files
-                var fileUpload = $("#files").get(0);
-                var files = fileUpload.files;
+            //get Uploaded files
+            var fileUpload = $("#files").get(0);
+            var files = fileUpload.files;
 
-                // Create  a FormData object
-                var fileData = new FormData();
+            // Create  a FormData object
+            var fileData = new FormData();
 
-                // if there are multiple files , loop through each files
-                for (var i = 0; i < files.length; i++) {
-                    fileData.append(files[i].name, files[i]);
+            // if there are multiple files , loop through each files
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+
+            $.ajax({
+                url: '/Job/AddFile', //URL to upload files
+                type: "POST", //as we will be posting files and other method POST is used
+                processData: false, //remember to set processData and ContentType to false, otherwise you may get an error
+                contentType: false,
+                data: fileData,
+                success: function (result) {
+                    $('#AssignedImagesDiv').append(result);
+                    //Add to Hiden input field a name of added file so you can keep track of what files are added to this object 
+                    $('#AssignedImagesTest').val($('#AssignedImagesTest').val() + ":" + $('#Item', $(result)).text());
+                    //Clear Input after adding file 
+                    $('#files').val('');
+                },//when success append html body to page
+                error: function (err) {
+                    console.log(err);
                 }
-
-                $.ajax({
-                    url: '/Job/AddFile', //URL to upload files
-                    type: "POST", //as we will be posting files and other method POST is used
-                    processData: false, //remember to set processData and ContentType to false, otherwise you may get an error
-                    contentType: false,
-                    data: fileData,
-                    success: function (result) {
-                        $('#AssignedImagesDiv').append(result);
-                        //TODO Changing value of curently added images 
-                        $('#AssignedImages').val($('#AssignedImages').val() + $(''))
-                    },//when success append html body to page
-                    error: function (err) {
-                        console.log(err);
-                    }
-                });
             });
         });
+    });
 
-    </script>
+    //Connect to Input field to set maximum number of files that you can upload at once 
+    $("#image").on("change", function () {
+        if ($("#image")[0].files.length > 2) {
+            alert("You can select only 2 images");
+        } else {
+            $("#imageUploadForm").submit();
+        }
+    });
+
+</script>
 }

@@ -34,7 +34,7 @@ namespace DataBase_Website.Controllers.DataBase
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([FromBody] JobModel accountModel)
+        public async Task<IActionResult> Create([Bind("JobId,AssignedImages,AssignedAccounts")] JobModel accountModel)
         {
             if (ModelState.IsValid)
             {
@@ -50,7 +50,7 @@ namespace DataBase_Website.Controllers.DataBase
         {
             //var c = Request.Form.Files;
 
-            return PartialView("ItemPartial", "test");
+            return PartialView("ItemPartial", "QWER");
         }
     }
 }
