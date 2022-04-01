@@ -6,38 +6,44 @@
 
 <h1>Create</h1>
 
-<h4>AccountModel</h4>
+<h4>Job</h4>
 <hr />
 <div class="row">
     <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="JobId" class="control-label"></label>
+            @*<div class="form-group">*@
+                @*<label asp-for="JobId" class="control-label"></label>*@
                 <input hidden="hidden" asp-for="JobId" value="@Guid.NewGuid()" class="form-control" />
-                <span asp-validation-for="JobId" class="text-danger"></span>
-            </div>
+                <span hidden="hidden" asp-validation-for="JobId" class="text-danger"></span>
+            @*</div>*@
+            @*<br />*@
             <div class="form-group float-left">
                 <label asp-for="AssignedImages" class="control-label "></label>
                 <input id="AssignedImagesTest" hidden="hidden" asp-for="AssignedImages" value="test" class="form-control" />
                 <div class="">
                     <input id="files" type="file" class="float-left" size="1" />
                     <div class="bg-dark rounded-pill float-left">
-                         <a id="AddFile" class=" text-white ml-2 mr-2">Dodaj</a>
+                        <a id="AddFile" class=" text-white ml-2 mr-2">Dodaj</a>
                     </div>
                 </div>
                 <br />
                 <div id="AssignedImagesDiv" class="float-left">  </div>
                 <span asp-validation-for="AssignedImages" class="text-danger"></span>
             </div>
-
-            <div class="form-group "style="clear:both">
+            <br />
+            <br />
+            <div class="form-group" style="clear:both">
                 <label asp-for="AssignedAccounts" class="control-label float-left"></label>
                 <input id="AssignedImages" hidden="hidden" asp-for="AssignedAccounts" class="form-control" />
-                 <a hidden="hidden" id="Replacable"></a>
+                <br />
+                <div style="clear:both">
+                    <a hidden="hidden" id="Replacable"></a>
+                </div>
+
                 <span asp-validation-for="AssignedAccounts" class="text-danger"></span>
             </div>
-
+            <br />
             <br />
             <div class="form-group" style="clear:both">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -45,7 +51,6 @@
         </form>
     </div>
 </div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
@@ -54,6 +59,10 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 <script>
+
+    $(document).on("click", "i.DeleteRow", function () {
+        $(this).parent().parent().remove();
+    });
 
     $(document).ready(function () {
 
@@ -66,9 +75,7 @@
             }
         });
 
-        //$('#Replacable').replaceWith("<a>123123</a>");
-           
-
+      
 
         $('#AddFile').click(function () {
 
@@ -81,26 +88,31 @@
 
             // if there are multiple files , loop through each files
             for (var i = 0; i < files.length; i++) {
+                console.log(files[i].name);
                 fileData.append(files[i].name, files[i]);
             }
 
-            $.ajax({
-                url: '/Job/AddFile', //URL to upload files
-                type: "POST", //as we will be posting files and other method POST is used
-                processData: false, //remember to set processData and ContentType to false, otherwise you may get an error
-                contentType: false,
-                data: fileData,
-                success: function (result) {
-                    $('#AssignedImagesDiv').append(result);
-                    //Add to Hiden input field a name of added file so you can keep track of what files are added to this object 
-                    $('#AssignedImagesTest').val($('#AssignedImagesTest').val() + ":" + $('#ItemName', $(result)).text());
-                    //Clear Input after adding file 
-                    $('#files').val('');
-                },//when success append html body to page
-                error: function (err) {
-                    console.log(err);
-                }
-            });
+
+            if (files.length != 0) {
+                $.ajax({
+                    url: '/Job/AddFile', //URL to upload files
+                    type: "POST", //as we will be posting files and other method POST is used
+                    processData: false, //remember to set processData and ContentType to false, otherwise you may get an error
+                    contentType: false,
+                    data: fileData,
+                    success: function (result) {
+                        $('#AssignedImagesDiv').append(result);
+                        //Add to Hiden input field a name of added file so you can keep track of what files are added to this object 
+                        $('#AssignedImagesTest').val($('#AssignedImagesTest').val() + ":" + $('#ItemName', $(result)).text());
+                        //Clear Input after adding file 
+                        $('#files').val('');
+                    },//when success append html body to page
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+            //fileData = new FormData();
         });
     });
 

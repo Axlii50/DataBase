@@ -3,9 +3,8 @@
 @foreach (DataBase_Website.Models.DataBaseModels.AccountModel x in Model)
 {
 <div id="AccountItem" class="float-left m-2 btn-dark rounded-pill editorRow">
-    <div class="mt-2 mb-2 editorRow">
+    <div class="mb-2 editorRow">
         <a class="float-left text-white mx-2" id="AccountItemName">@x.AccountName</a>
-        <a id="t" href="#" class="bi bi-x-circle-fill ml-1 deleteRow"></a>
     </div>
 </div>
 }
