@@ -78,9 +78,6 @@ namespace DataBase_Website.Controllers.DataBase
             {
                 return NotFound();
             }
-
-
-            System.Diagnostics.Debug.WriteLine(accountModel.Password);
             return View(accountModel);
         }
 
@@ -101,7 +98,7 @@ namespace DataBase_Website.Controllers.DataBase
                 try
                 {
                     _context.Update(accountModel);
-                    await _context.SaveChangesAsync();   
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {

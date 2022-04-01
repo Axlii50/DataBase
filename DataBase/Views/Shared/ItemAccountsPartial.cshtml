@@ -2,9 +2,9 @@
 
 @foreach (DataBase_Website.Models.DataBaseModels.AccountModel x in Model)
 {
-<div id="AccountItem" class="float-left m-2 btn-dark rounded-pill editorRow">
+<div id="AccountItem" class="float-left m-2 rounded-pill " style="background-color: rgb(52, 58, 64)">
     <div class="mb-2 editorRow">
-        <a class="float-left text-white mx-2" id="AccountItemName">@x.AccountName</a>
+        <a class="float-left text-white mx-2 AccountItemName">@x.AccountName</a>
     </div>
 </div>
 }

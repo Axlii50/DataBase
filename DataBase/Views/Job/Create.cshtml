@@ -20,7 +20,7 @@
             @*<br />*@
             <div class="form-group float-left">
                 <label asp-for="AssignedImages" class="control-label "></label>
-                <input id="AssignedImagesTest" hidden="hidden" asp-for="AssignedImages" value="test" class="form-control" />
+                <input id="AssignedImages" hidden="hidden" asp-for="AssignedImages" class="form-control" />
                 <div class="">
                     <input id="files" type="file" class="float-left" size="1" />
                     <div class="bg-dark rounded-pill float-left">
@@ -35,7 +35,7 @@
             <br />
             <div class="form-group" style="clear:both">
                 <label asp-for="AssignedAccounts" class="control-label float-left"></label>
-                <input id="AssignedImages" hidden="hidden" asp-for="AssignedAccounts" class="form-control" />
+                <input id="AssignedAccounts" hidden="hidden" asp-for="AssignedAccounts" class="form-control" />
                 <br />
                 <div style="clear:both">
                     <a hidden="hidden" id="Replacable"></a>
@@ -64,9 +64,20 @@
         $(this).parent().parent().remove();
     });
 
-    $(document).ready(function () {
+    //
+    $(document).on("click", "a.AccountItemName", function () {
+        if ($(this).parent().parent().css("background-color") == "rgb(52, 58, 64)") {
+            $(this).parent().parent().css("background-color", "rgb(126, 242, 63)");
+            $('#AssignedAccounts').val($('#AssignedAccounts').val() + ":" + $(this).text());
+        } else {
+            $(this).parent().parent().css("background-color", "rgb(52, 58, 64)");
+            $('#AssignedAccounts').val($('#AssignedAccounts').val().replace(":" + $(this).text(), ''));
+        }
+    });
+   
 
-       
+
+    $(document).ready(function () {
         $.ajax({
             url: '/Job/ReplaceItem',
             type: "GET",
@@ -74,8 +85,6 @@
                 $('#Replacable').replaceWith(result);
             }
         });
-
-      
 
         $('#AddFile').click(function () {
 
@@ -92,7 +101,6 @@
                 fileData.append(files[i].name, files[i]);
             }
 
-
             if (files.length != 0) {
                 $.ajax({
                     url: '/Job/AddFile', //URL to upload files
@@ -103,7 +111,7 @@
                     success: function (result) {
                         $('#AssignedImagesDiv').append(result);
                         //Add to Hiden input field a name of added file so you can keep track of what files are added to this object 
-                        $('#AssignedImagesTest').val($('#AssignedImagesTest').val() + ":" + $('#ItemName', $(result)).text());
+                        $('#AssignedImages').val($('#AssignedImages').val() + ":" + $('#ItemName', $(result)).text());
                         //Clear Input after adding file 
                         $('#files').val('');
                     },//when success append html body to page
@@ -112,8 +120,10 @@
                     }
                 });
             }
-            //fileData = new FormData();
         });
+
+       
+
     });
 
     //Connect to Input field to set maximum number of files that you can upload at once 
