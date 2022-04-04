@@ -14,9 +14,9 @@ namespace DataBase_Website.Controllers.DataBase
     public class JobController : Controller
     {
         private readonly DataBase_WebsiteContext _context;
-        private IHostingEnvironment Environment;
+        private IWebHostEnvironment Environment;
 
-        public JobController(DataBase_WebsiteContext context, IHostingEnvironment _env)
+        public JobController(DataBase_WebsiteContext context, IWebHostEnvironment _env)
         {
             _context = context;
             Environment = _env;
@@ -39,22 +39,23 @@ namespace DataBase_Website.Controllers.DataBase
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("JobId,AssignedImages,AssignedAccounts")] JobModel accountModel)
+        public async Task<IActionResult> Create([Bind("JobId,AssignedImages,AssignedAccounts")] JobModel JobModel)
         {
             if (ModelState.IsValid)
             {
-                _context.JobModel.Add(accountModel);
+                JobModel.AssignedAccounts = JobModel.AssignedAccounts.Remove(0, 1);
+                JobModel.AssignedImages = JobModel.AssignedImages.Remove(0, 1);
+                _context.JobModel.Add(JobModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(accountModel);
+            return View(JobModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddFileAsync()
         {
-            //var c = Request.Form.Files;
-
+            //TODO change name of file to make sure that there will be no overwrites of files 
             foreach(IFormFile x in Request.Form.Files)
             {
                 System.Diagnostics.Debug.WriteLine(x.FileName);
@@ -69,7 +70,7 @@ namespace DataBase_Website.Controllers.DataBase
                 return PartialView("ItemPartial", x.FileName);
             }
 
-            return PartialView("ItemPartial", "test");
+            return PartialView("ItemPartial", "NoContentFile");
         }
 
         private string EnsureCorrectFilename(string filename)
@@ -82,8 +83,8 @@ namespace DataBase_Website.Controllers.DataBase
 
         private string GetPathAndFilename(string filename)
         {
+            //return path to Images folder and add filename to it 
             return Environment.ContentRootPath + "\\Images\\" + filename;
-             
         }
 
         [HttpGet]
@@ -95,7 +96,7 @@ namespace DataBase_Website.Controllers.DataBase
         [HttpPost]
         public IActionResult DeleteImage(string FileName)
         {
-
+            //deleting file with specific path
             System.IO.File.Delete(GetPathAndFilename(FileName));
 
             return Ok();

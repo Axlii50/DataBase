@@ -12,12 +12,8 @@
     <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*<div class="form-group">*@
-                @*<label asp-for="JobId" class="control-label"></label>*@
-                <input hidden="hidden" asp-for="JobId" value="@Guid.NewGuid()" class="form-control" />
-                <span hidden="hidden" asp-validation-for="JobId" class="text-danger"></span>
-            @*</div>*@
-            @*<br />*@
+            <input hidden="hidden" asp-for="JobId" value="@Guid.NewGuid()" class="form-control" />
+            <span hidden="hidden" asp-validation-for="JobId" class="text-danger"></span>
             <div class="form-group float-left">
                 <label asp-for="AssignedImages" class="control-label "></label>
                 <input id="AssignedImages" hidden="hidden" asp-for="AssignedImages" class="form-control" />
@@ -61,7 +57,9 @@
 <script>
 
     $(document).on("click", "i.DeleteRow", function () {
+        //send post request to delete image 
         $.post('/Job/DeleteImage', { "": $(this).parent().find('a').text() });
+        //remove div 
         $(this).parent().parent().remove();
     });
 
@@ -98,7 +96,6 @@
 
             // if there are multiple files , loop through each files
             for (var i = 0; i < files.length; i++) {
-                console.log(files[i].name);
                 fileData.append(files[i].name, files[i]);
             }
 
@@ -124,6 +121,7 @@
         });
     });
 
+    //TODO
     //Connect to Input field to set maximum number of files that you can upload at once 
     $("#image").on("change", function () {
         if ($("#image")[0].files.length > 2) {
