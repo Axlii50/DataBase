@@ -5,13 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="Images\asteroidbelt.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Classes\" />
+    <Folder Include="Images\" />
     <Folder Include="Models\PartialViewModels\" />
   </ItemGroup>
 

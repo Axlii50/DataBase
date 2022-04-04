@@ -56,6 +56,7 @@ namespace DataBase_Website.Controllers.DataBase
         public async Task<IActionResult> AddFileAsync()
         {
             //TODO change name of file to make sure that there will be no overwrites of files 
+            List<string> Files = new List<string>();
             foreach(IFormFile x in Request.Form.Files)
             {
                 System.Diagnostics.Debug.WriteLine(x.FileName);
@@ -65,12 +66,12 @@ namespace DataBase_Website.Controllers.DataBase
                 filename = this.EnsureCorrectFilename(filename);
 
                 using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename)))
-                    await x.CopyToAsync(output); 
+                    await x.CopyToAsync(output);
 
-                return PartialView("ItemPartial", x.FileName);
+                Files.Add(x.FileName);
             }
 
-            return PartialView("ItemPartial", "NoContentFile");
+            return PartialView("ItemPartial", Files.ToArray());
         }
 
         private string EnsureCorrectFilename(string filename)

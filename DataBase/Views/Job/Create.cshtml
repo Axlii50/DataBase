@@ -18,7 +18,7 @@
                 <label asp-for="AssignedImages" class="control-label "></label>
                 <input id="AssignedImages" hidden="hidden" asp-for="AssignedImages" class="form-control" />
                 <div class="">
-                    <input id="files" type="file" class="float-left" size="1" />
+                    <input id="files" type="file" class="float-left" multiple @*size="1"*@ />
                     <div class="bg-dark rounded-pill float-left">
                         <a id="AddFile" class=" text-white ml-2 mr-2">Dodaj</a>
                     </div>
@@ -120,16 +120,5 @@
             }
         });
     });
-
-    //TODO
-    //Connect to Input field to set maximum number of files that you can upload at once 
-    $("#image").on("change", function () {
-        if ($("#image")[0].files.length > 2) {
-            alert("Currently only first image will be uploaded to server");
-        } else {
-            $("#imageUploadForm").submit();
-        }
-    });
-
 </script>
 }

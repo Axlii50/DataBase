@@ -1,9 +1,12 @@
 ﻿
-@model string
+@model string[]
 
-<div class="float-left m-2 btn-dark rounded-pill editorRow">
+@foreach (string x in Model)
+{
+<div class="float-left m-2 btn-dark rounded-pill editorRow disable-select">
     <div class="mt-2 mb-2 editorRow">
-        <a id="ItemName" class="float-left text-white mx-2" >@Model</a>
+        <a id="ItemName" class="float-left text-white mx-2">@x</a>
         <i href="#" class="bi bi-x-circle-fill ml-1 mr-1 DeleteRow"></i>
     </div>
 </div>
+}

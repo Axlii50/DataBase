@@ -26,7 +26,7 @@ namespace DataBase.Controllers
         [Produces("application/json")]
         public JsonResult Login([Bind("Login,Password")] LoginModel requestdata)
         {
-
+            //Status = 1 -> Logged Status = 2 -> Failed to log int
             //Decrypt sended data 
             DataBase.Cryptography.DecryptLoginModel(ref requestdata);
 
