@@ -4,7 +4,7 @@ dodac komunikacje do aplikacji na androida odnosnie Zadañ
 
 przetestowaæ czy nowe logowanie dzia³a na bazie BazyDanych - Dzia³a
 
-Poprawne tworzenie zadañ 
+Poprawne tworzenie zadañ - Dzia³a
 
-poprawne wyswietlanie zdañ na stronie 
+poprawne wyswietlanie zadañ na stronie 
 

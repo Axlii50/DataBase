@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
@@ -101,6 +102,107 @@ namespace DataBase_Website.Controllers.DataBase
             System.IO.File.Delete(GetPathAndFilename(FileName));
 
             return Ok();
+        }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var jobModel = await _context.JobModel
+                .FirstOrDefaultAsync(m => m.JobId == id);
+            if (jobModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(jobModel);
+        }
+
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var jobModel = await _context.JobModel.FindAsync(id);
+            if (jobModel == null)
+            {
+                return NotFound();
+            }
+            return View(jobModel);
+        }
+
+        // POST: AccountModels/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, [Bind("JobId,AssignedAccounts,AssignedImages")] JobModel jobModel)
+        {
+            if (id != jobModel.JobId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(jobModel);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!JobModelExists(jobModel.JobId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(jobModel);
+        }
+
+        private bool JobModelExists(string id)
+        {
+            return _context.JobModel.Any(e => e.JobId == id);
+        }
+
+        // GET: AccountModels/Delete/5
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var jobModel = await _context.JobModel
+                .FirstOrDefaultAsync(m => m.JobId == id);
+            if (jobModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(jobModel);
+        }
+
+        // POST: AccountModels/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var jobModel = await _context.JobModel.FindAsync(id);
+            _context.JobModel.Remove(jobModel);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

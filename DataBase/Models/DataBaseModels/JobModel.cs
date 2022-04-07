@@ -12,6 +12,7 @@ namespace DataBase_Website.Models.DataBaseModels
         public string JobId { get; set; }
 
         [DataType(DataType.Text)]
+        [Required]
         public string AssignedAccounts { get; set; }
 
         #region Functions
@@ -38,6 +39,7 @@ namespace DataBase_Website.Models.DataBaseModels
         #endregion
 
         [DataType(DataType.Text)]
+        [Required]
         public string AssignedImages { get; set; }
 
         #region Functions

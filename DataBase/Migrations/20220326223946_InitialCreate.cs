@@ -26,8 +26,8 @@ namespace DataBase_Website.Migrations
                 {
                     JobId = table.Column<string>(nullable: false),
                     //it may be changed later on
-                    AssignedAccounts = table.Column<string>(nullable: true),
-                    AssignedImages = table.Column<string>(nullable: true)
+                    AssignedAccounts = table.Column<string>(nullable: false),
+                    AssignedImages = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
