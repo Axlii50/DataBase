@@ -13,7 +13,6 @@ namespace DataBase.Controllers
 {
     public class MobileAppController : Controller
     {
-
         private readonly DataBase_WebsiteContext _context;
 
         public MobileAppController(DataBase_WebsiteContext context)
@@ -21,12 +20,17 @@ namespace DataBase.Controllers
             _context = context;
         }
 
-
+        /// <summary>
+        /// method with purpose to authenticate correct password and login 
+        /// when both are correct return status = 1 and new guid with 1 hour lifespan 
+        /// when incorrect return status = 2 
+        /// </summary>
+        /// <param name="requestdata"></param>
+        /// <returns></returns>
         [HttpPost]
         [Produces("application/json")]
         public JsonResult Login([Bind("Login,Password")] LoginModel requestdata)
         {
-            //Status = 1 -> Logged Status = 2 -> Failed to log int
             //Decrypt sended data 
             DataBase.Cryptography.DecryptLoginModel(ref requestdata);
 
@@ -50,6 +54,12 @@ namespace DataBase.Controllers
         }
 
 
+        /// <summary>
+        /// allows you to download specific image from website without making it public 
+        /// </summary>
+        /// <param name="GUID"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Download([Bind("GUID,fileName")] string GUID, string fileName)
         {
@@ -71,6 +81,9 @@ namespace DataBase.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// remove all expired GUID from list
+        /// </summary>
         public void UpdateGuids()
         {
             List<Models.GuidEntity> expired = new List<Models.GuidEntity>();
@@ -81,6 +94,11 @@ namespace DataBase.Controllers
                 Startup.AuthorizedGuids.Remove(x);
         }
 
+        /// <summary>
+        /// return bool value that represent if given date is expired or not 
+        /// </summary>
+        /// <param name="Expire"></param>
+        /// <returns></returns>
         public bool IsExpired(DateTime Expire)
         {
             return Expire - DateTime.Now > TimeSpan.Zero ? false : true;

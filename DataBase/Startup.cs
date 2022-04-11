@@ -64,7 +64,6 @@ namespace DataBase
         }
     }
 
-
     public static class Html
     {
         public static bool IsDebug(this IHtmlHelper html)
@@ -84,6 +83,4 @@ namespace DataBase
             return c;
         }
     }
-
-
 }
