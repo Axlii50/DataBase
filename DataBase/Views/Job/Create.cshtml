@@ -109,7 +109,7 @@
                     success: function (result) {
                         $('#AssignedImagesDiv').append(result);
                         //Add to Hiden input field a name of added file so you can keep track of what files are added to this object 
-                        $('#AssignedImages').val($('#AssignedImages').val() + ":" + $('#ItemName', $(result)).text());
+                        $('#AssignedImages').val($('#AssignedImages').val() + ":" + $(result).filter("#ItemName").text());
                         //Clear Input after adding file 
                         $('#files').val('');
                     },//when success append html body to page

@@ -75,6 +75,15 @@ namespace DataBase
             return false;
 #endif
         }
+        public static string JoinString(string[] string_)
+        {
+            string c = string.Empty;
+            foreach (string x in string_)
+                c += x + ":";
+            c.Remove(c.Length - 2, 1);
+            return c;
+        }
     }
+
 
 }

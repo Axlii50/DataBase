@@ -9,28 +9,51 @@
 <div>
     <h4>AccountModel</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.JobId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.JobId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Images)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Images)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Accounts)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Accounts)
-        </dd>
-    </dl>
+    <div>
+        @Html.HiddenFor(x => x.AssignedAccounts)
+        <a hidden="hidden" id="replace_assignedaccounts"></a>
+    </div>
+    <br />
+    <div style="clear:both">
+        @Html.HiddenFor(x => x.AssignedImages)
+        <a hidden="hidden" id="replace_assignedimages"></a>
+    </div>
 </div>
-<div>
+<br />
+<div style="clear:both">
     <a asp-action="Edit" asp-route-id="@Model.JobId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+
+
+
+@section Scripts{ 
+<script>
+
+    $(document).ready(function () {
+
+        console.log($("#AssignedAccounts").val());
+
+        $.ajax({
+            url: '/Job/GetAllAccounts',
+            type: "GET",
+            data: { accounts: $("#AssignedAccounts").val() },
+            success: function (result) {
+                $('#replace_assignedaccounts').replaceWith(result);
+            }
+        });
+
+        $.ajax({
+            url: '/Job/GetAllImages',
+            type: "GET",
+            data: { images: $("#AssignedImages").val() },
+            success: function (result) {
+                $('#replace_assignedimages').replaceWith(result);
+            }
+        });
+    });
+
+
+</script>
+}

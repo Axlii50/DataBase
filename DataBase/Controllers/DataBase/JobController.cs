@@ -1,6 +1,7 @@
 ﻿using DataBase_Website.Data;
 using DataBase_Website.Models.DataBaseModels;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -45,7 +46,9 @@ namespace DataBase_Website.Controllers.DataBase
             if (ModelState.IsValid)
             {
                 JobModel.AssignedAccounts = JobModel.AssignedAccounts.Remove(0, 1);
+                JobModel.AssignedAccounts = JobModel.AssignedAccounts.Remove(JobModel.AssignedAccounts.Length-2, 1);
                 JobModel.AssignedImages = JobModel.AssignedImages.Remove(0, 1);
+                JobModel.AssignedImages = JobModel.AssignedImages.Remove(JobModel.AssignedImages.Length - 1, 1);
                 _context.JobModel.Add(JobModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -60,8 +63,6 @@ namespace DataBase_Website.Controllers.DataBase
             List<string> Files = new List<string>();
             foreach(IFormFile x in Request.Form.Files)
             {
-                System.Diagnostics.Debug.WriteLine(x.FileName);
-
                 string filename = ContentDispositionHeaderValue.Parse(x.ContentDisposition).FileName.Trim('"');
 
                 filename = this.EnsureCorrectFilename(filename);
@@ -119,6 +120,24 @@ namespace DataBase_Website.Controllers.DataBase
             }
 
             return View(jobModel);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllAccounts([Bind("accounts")]string accounts)
+        {
+            return PartialView("AccountDetailsPartialView", accounts.Split(':'));
+        }
+        [HttpGet]
+        public IActionResult GetAllImages([Bind("images")] string images)
+        {
+            var imag = images.Split(':');
+            return PartialView("ImagePartialView", imag );
+        }
+
+        public IActionResult GetImage(string Imagename)
+        {
+            byte[] imageByteData = System.IO.File.ReadAllBytes(GetPathAndFilename(Imagename));
+            return File(imageByteData, "image/png");
         }
 
         public async Task<IActionResult> Edit(string id)
@@ -186,6 +205,10 @@ namespace DataBase_Website.Controllers.DataBase
 
             var jobModel = await _context.JobModel
                 .FirstOrDefaultAsync(m => m.JobId == id);
+
+
+
+
             if (jobModel == null)
             {
                 return NotFound();
