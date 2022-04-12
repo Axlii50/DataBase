@@ -84,12 +84,21 @@ namespace DataBase_Website.Controllers.DataBase
             return filename;
         }
 
+        /// <summary>
+        /// return path to the file of name filename
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         private string GetPathAndFilename(string filename)
         {
             //return path to Images folder and add filename to it 
             return Environment.ContentRootPath + "\\Images\\" + filename;
         }
 
+        /// <summary>
+        /// get html result with all accounts from database for replacing 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult ReplaceItem()
         {
@@ -122,11 +131,22 @@ namespace DataBase_Website.Controllers.DataBase
             return View(jobModel);
         }
 
+        /// <summary>
+        /// return all accounts from given string that is from job model 
+        /// </summary>
+        /// <param name="accounts"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetAllAccounts([Bind("accounts")]string accounts)
         {
             return PartialView("AccountDetailsPartialView", accounts.Split(':'));
         }
+
+        /// <summary>
+        /// return all images from given string that is from job model 
+        /// </summary>
+        /// <param name="images"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetAllImages([Bind("images")] string images)
         {
@@ -134,6 +154,11 @@ namespace DataBase_Website.Controllers.DataBase
             return PartialView("ImagePartialView", imag );
         }
 
+        /// <summary>
+        /// send file of given name 
+        /// </summary>
+        /// <param name="Imagename"></param>
+        /// <returns></returns>
         public IActionResult GetImage(string Imagename)
         {
             byte[] imageByteData = System.IO.File.ReadAllBytes(GetPathAndFilename(Imagename));
@@ -205,9 +230,6 @@ namespace DataBase_Website.Controllers.DataBase
 
             var jobModel = await _context.JobModel
                 .FirstOrDefaultAsync(m => m.JobId == id);
-
-
-
 
             if (jobModel == null)
             {

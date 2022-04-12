@@ -6,5 +6,5 @@ przetestowaæ czy nowe logowanie dzia³a na bazie BazyDanych - Dzia³a
 
 Poprawne tworzenie zadañ - Dzia³a
 
-poprawne wyswietlanie zadañ na stronie 
+poprawne wyswietlanie zadañ na stronie - Dzia³a ale jest miejsce na poprawki pod wzgledem wygl¹du 
 
