@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,10 +17,32 @@ namespace MobileApp
         {
             InitializeComponent();
 
-            GuidLabel.Text = App.Guid;
+            GuidLabel.Text = App.Account.PrivateAccountKey;
 
-            Image1.Source = $"https://testowanazwa.somee.com/MobileApp/Download?fileName=asteroidbelt.jpg&GUID={App.Guid}";
-            
+            SetUp();
+
+        }
+        private async void SetUp()
+        {
+            var values = new Dictionary<string, string>
+             {
+                { "GUID", App.Guid },
+                { "AccountID", App.Account.PrivateAccountKey }
+             };
+
+            HttpClient client = new HttpClient();
+            var content = new FormUrlEncodedContent(values);
+            HttpResponseMessage response = null;
+            try
+            {
+                Uri Url = new Uri("https://testowanazwa.somee.com/MobileApp/GetJob");
+
+                response = await client.PostAsync(Url, content);
+            }
+            catch (Exception exc)
+            {
+
+            };
         }
     }
 }

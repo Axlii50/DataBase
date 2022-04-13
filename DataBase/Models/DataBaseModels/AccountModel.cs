@@ -28,6 +28,5 @@ namespace DataBase_Website.Models.DataBaseModels
 
         [Required]
         public DataBase.Models.Permission Permission { get; set; }
-
     }
 }

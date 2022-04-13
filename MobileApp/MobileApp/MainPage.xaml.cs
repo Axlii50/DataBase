@@ -83,7 +83,7 @@ namespace MobileApp
             string result = await response.Content.ReadAsStringAsync();
 
             LoginResponse LoginResult_Converted = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginResponse>(result);
-
+            System.Diagnostics.Debug.WriteLine(result);
             if(LoginResult_Converted.Status == 2)
             {
                 NotificifationLabel.Text = "Logging in failed";
@@ -95,6 +95,7 @@ namespace MobileApp
             {
                 //await Navigation.PushAsync(new Page1());
                 App.Guid = LoginResult_Converted.guid;
+                App.Account = LoginResult_Converted.Account;
                 Application.Current.MainPage = new Page1();
             }
         }

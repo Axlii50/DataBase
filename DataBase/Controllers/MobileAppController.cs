@@ -1,5 +1,6 @@
 ﻿using DataBase_Website.Data;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,10 +48,11 @@ namespace DataBase.Controllers
                 {
                     guid = guid,
                     Status = 1,
-                    Permission =  accountModel.Permission
+                    Account = accountModel
                 });
+
             }
-            return Json(new Models.JsonResult { guid = "null", Status = 2, Permission = Models.Permission.NULL });
+            return Json(new Models.JsonResult { guid = "null", Status = 2});
         }
 
 
@@ -102,6 +104,23 @@ namespace DataBase.Controllers
         public bool IsExpired(DateTime Expire)
         {
             return Expire - DateTime.Now > TimeSpan.Zero ? false : true;
+        }
+
+        [HttpGet]
+        [Produces("application/json")]
+        public IActionResult GetJobs([Bind("GUID,AccountID")] string GUID, string AccountID)
+        {
+            UpdateGuids();
+
+#if !DEBUG
+            if (Startup.AuthorizedGuids.Find(x => x.Guid == GUID) == null) return Unauthorized();
+#endif
+
+            var filteredJobs = _context.JobModel.ToList()
+                .FindAll(x => x.Accounts
+                .Find(y => y == AccountID) != string.Empty);
+
+            return Json(filteredJobs);
         }
     }
 }

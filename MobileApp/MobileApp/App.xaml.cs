@@ -10,6 +10,7 @@ namespace MobileApp
         public static int ScreenWidth { get; set; }
         public static readonly Uri Server_URL = new Uri("https://testowanazwa.somee.com/");
         public static string Guid = string.Empty;
+        public static DataBase_Website.Models.DataBaseModels.AccountModel Account = null;
 
         public App()
         {

@@ -26,6 +26,6 @@ namespace DataBase.Models
     {
         public int Status { get; set; } // 1 ok 2 bad
         public string guid { get; set; }
-        public Permission Permission { get; set; }
+        public DataBase_Website.Models.DataBaseModels.AccountModel Account { get; set; }
     }
 }

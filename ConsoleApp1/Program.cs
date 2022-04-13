@@ -15,8 +15,8 @@ namespace ConsoleApp1
 
             LoginModel LoginData = new LoginModel()
             {
-                Login = "Admin",
-                Password = "admin"
+                Login = "Mati",
+                Password = "Mati"
             };
 
 
