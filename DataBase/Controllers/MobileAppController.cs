@@ -43,7 +43,6 @@ namespace DataBase.Controllers
                 Startup.AuthorizedGuids.Add(new Models.GuidEntity { Guid = guid, Created = DateTime.Now.AddHours(1) });
 
                 foreach (Models.GuidEntity c in Startup.AuthorizedGuids)
-                    System.Diagnostics.Debug.WriteLine(c.Guid);
                 return Json(new Models.JsonResult
                 {
                     guid = guid,

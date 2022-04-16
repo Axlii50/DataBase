@@ -1,17 +1,12 @@
+using DataBase_Website.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using DataBase_Website.Data;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DataBase
 {
@@ -22,6 +17,8 @@ namespace DataBase
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            //Debuging Purpose for whole development procces 
+            AuthorizedGuids.Add(new Models.GuidEntity { Created = System.DateTime.Today.AddYears(10), Guid = "test111" });
         }
 
         public IConfiguration Configuration { get; }

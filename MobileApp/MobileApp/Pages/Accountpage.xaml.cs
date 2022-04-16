@@ -38,6 +38,7 @@ namespace MobileApp
                 Uri Url = new Uri("https://testowanazwa.somee.com/MobileApp/GetJob");
 
                 response = await client.PostAsync(Url, content);
+                System.Diagnostics.Debug.Write(response);
             }
             catch (Exception exc)
             {

@@ -49,6 +49,9 @@ namespace DataBase_Website.Controllers.DataBase
                 JobModel.AssignedAccounts = JobModel.AssignedAccounts.Remove(JobModel.AssignedAccounts.Length-2, 1);
                 JobModel.AssignedImages = JobModel.AssignedImages.Remove(0, 1);
                 JobModel.AssignedImages = JobModel.AssignedImages.Remove(JobModel.AssignedImages.Length - 1, 1);
+                //i dont know if this gonna prevent all bugs with File assiging but for now small bug fix
+                //there is needed to do more testing and see if this really fix this problem 
+                JobModel.AssignedImages = JobModel.AssignedImages.Replace("::", ":");
                 _context.JobModel.Add(JobModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
