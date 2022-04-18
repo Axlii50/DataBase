@@ -1,7 +1,6 @@
 ﻿
 @model string[]
 
-
 @foreach (string x in Model)
 {
 <div class="float-left m-2 btn-dark rounded-pill editorRow disable-select">
@@ -12,3 +11,7 @@
 </div>
 }
 <a id="ItemName" hidden="hidden">@DataBase.Html.JoinString(Model)</a>
+
+@section Script{
+    @Html.RenderPartialAsync("AdRemoverPartial")
+}

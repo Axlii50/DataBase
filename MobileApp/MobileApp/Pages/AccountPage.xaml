@@ -6,7 +6,7 @@
         <StackLayout>
             <ScrollView>
                 <StackLayout x:Name="ListView">
-                    
+                   
                 </StackLayout>
             </ScrollView>
             <Label x:Name="GuidLabel" VerticalOptions="CenterAndExpand" 

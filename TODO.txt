@@ -10,3 +10,6 @@ poprawne wyswietlanie zadañ na stronie - Dzia³a ale jest miejsce na poprawki pod
 
 rozdzielic controllery na Partial Classes by by³o prosciej czytac oraz po grupowaæ funkcje np edit create details index delete dla mobile inne 
 
+Uploadowanie zdjec po kliknieciu przycisku dodaj jest ciutke czasoch³onne 
+
+

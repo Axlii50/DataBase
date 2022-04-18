@@ -1,4 +1,5 @@
 ﻿using DataBase_Website.Data;
+using DataBase_Website.Models.DataBaseModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -114,12 +115,19 @@ namespace DataBase.Controllers
 #if !DEBUG
             if (Startup.AuthorizedGuids.Find(x => x.Guid == GUID) == null) return Unauthorized();
 #endif
-
-            var filteredJobs = _context.JobModel.ToList()
-                .FindAll(x => x.Accounts
-                .Find(y => y == AccountID) != string.Empty);
-
-            return Json(filteredJobs);
+            List<string> Jobs = new List<string>();
+            AccountModel account = _context.AccountModel.First(x => x.PrivateAccountKey == AccountID);
+            foreach(JobModel x in _context.JobModel)
+            {
+                var b = x.Accounts.Find(c => c == account.AccountName);
+                if (!string.IsNullOrEmpty(b))
+                    Jobs.Add(x.JobId);
+            }
+           
+            //i have idea for this but i dont think its good
+            // instead of sending whole json jobs send only Id of all jobs and then later get job by their id 
+            //but i think thats pointless and only complicates code more than its needed 
+            return Json(Jobs);
         }
     }
 }
