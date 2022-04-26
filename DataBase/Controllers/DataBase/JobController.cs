@@ -46,7 +46,8 @@ namespace DataBase_Website.Controllers.DataBase
             if (ModelState.IsValid)
             {
                 JobModel.AssignedAccounts = JobModel.AssignedAccounts.Remove(0, 1);
-                JobModel.AssignedAccounts = JobModel.AssignedAccounts.Remove(JobModel.AssignedAccounts.Length-2, 1);
+                if (JobModel.AssignedAccounts[JobModel.AssignedAccounts.Length-1] == ':')
+                    JobModel.AssignedAccounts = JobModel.AssignedAccounts.Remove(JobModel.AssignedAccounts.Length - 1, 1);
                 JobModel.AssignedImages = JobModel.AssignedImages.Remove(0, 1);
                 JobModel.AssignedImages = JobModel.AssignedImages.Remove(JobModel.AssignedImages.Length - 1, 1);
                 //i dont know if this gonna prevent all bugs with File assiging but for now small bug fix

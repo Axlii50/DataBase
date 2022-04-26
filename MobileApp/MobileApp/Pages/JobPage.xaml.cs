@@ -1,43 +1,42 @@
 ﻿using DataBase_Website.Models.DataBaseModels;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MobileApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AccountPage : ContentPage
+    public partial class JobPage : ContentPage
     {
-        public AccountPage()
+        private string JobId;
+
+        public JobPage(string JobId)
         {
             InitializeComponent();
 
-            GuidLabel.Text = App.Account.PrivateAccountKey;
-
+            this.JobId = JobId;
+            this.JobIDLabel.Text = JobId;
             SetUp();
         }
+
         private void SetUp()
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            var request = System.Net.HttpWebRequest.Create($"https://testowanazwa.somee.com/MobileApp/GetJobs?GUID={App.Guid}&AccountID={App.Account.PrivateAccountKey}");
+            var request = System.Net.HttpWebRequest.Create($"https://testowanazwa.somee.com/MobileApp/GetJob?GUID={App.Guid}&JobId={this.JobId}");
             request.Method = "GET";
             request.ContentType = "application/json";
             try
             {
-                using(HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                 {
-                    if(response.StatusCode != HttpStatusCode.OK)
+                    if (response.StatusCode != HttpStatusCode.OK)
                         System.Diagnostics.Debug.WriteLine("Error fetching data. Server returned status code: {0}", response.StatusCode);
                     using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                     {
@@ -48,18 +47,16 @@ namespace MobileApp.Pages
                         }
                         else
                         {
-                            List<string> Jobs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(content);
+                            JobModel Job = Newtonsoft.Json.JsonConvert.DeserializeObject<JobModel>(content);
 
-                            foreach (string x in Jobs)
+                            foreach (string x in Job.Images)
                             {
-                                var button = new Button()
+                                var Image = new Image()
                                 {
-                                    Text = x,
-
+                                    Source = "https://testowanazwa.somee.com/MobileApp/Download?GUID="+ App.Guid + "&fileName=" + /*"alena-aenami-fade-1k.jpg"*/ x
                                 };
-                                button.Clicked += button_Clicked;
                                 //To test
-                                this.ListView.Children.Add(button);
+                                this.Images.Children.Add(Image);
                             }
                             this.UpdateChildrenLayout();
                         }
@@ -70,14 +67,12 @@ namespace MobileApp.Pages
             {
                 throw;
             };
-            stopwatch.Stop();
-            System.Diagnostics.Debug.WriteLine(stopwatch.Elapsed);
         }
 
-        private void button_Clicked(object sender, EventArgs e)
+        protected override bool OnBackButtonPressed()
         {
-            Button _button = (Button)sender;
-            Application.Current.MainPage = new Pages.JobPage(_button.Text);
+            Application.Current.MainPage = App.accPage;
+            return true;
         }
     }
 }

@@ -12,6 +12,8 @@ namespace MobileApp
         public static string Guid = string.Empty;
         public static DataBase_Website.Models.DataBaseModels.AccountModel Account = null;
 
+        public static Pages.AccountPage accPage;
+
         public App()
         {
             InitializeComponent();
@@ -20,6 +22,7 @@ namespace MobileApp
             MainPage = new MainPage();
         }
 
+        
 
         protected override void OnStart()
         {

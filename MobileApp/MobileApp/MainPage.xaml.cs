@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -16,11 +17,22 @@ namespace MobileApp
         public MainPage()
         {
             InitializeComponent();
+            
         }
+
+        protected override bool OnBackButtonPressed()
+        {
+            
+            return base.OnBackButtonPressed();
+        }
+
 
         HttpClient client;
         private async void  Button_Clicked(object sender, EventArgs e)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             client = new HttpClient();
 
             Droid.LoginModel LoginData = new Droid.LoginModel() 
@@ -32,7 +44,6 @@ namespace MobileApp
             //check if any of neccessary field is empty 
             //if one of this field is empty just give warning "Password or login are empty"
             //if both are not empty continue 
-            //TODO TEST
             if (LoginData.Login == string.Empty || LoginData.Password == string.Empty /*|| (LoginData.Login == string.Empty && LoginData.Password == string.Empty)*/)
             {
                 NotificifationLabel.Text = "Password or login are empty";
@@ -44,7 +55,7 @@ namespace MobileApp
                 NotificifationLabel.Text = "Logging in";
                 NotificifationLabel.TextColor = Color.Green;
             }
-
+            System.Diagnostics.Debug.WriteLine(stopwatch.Elapsed);
             Droid.Cryptography.EncryptLoginModel(ref LoginData);
 
             var values = new Dictionary<string, string>
@@ -65,9 +76,11 @@ namespace MobileApp
             {
                 
             };
-                //Thread.Sleep(500);
+            System.Diagnostics.Debug.WriteLine(stopwatch.Elapsed);
+           
+            //Thread.Sleep(500);
 
-            if(response == null)
+            if (response == null)
             {
                 NotificifationLabel.Text = "Error while connecting to service";
                 NotificifationLabel.TextColor = Color.Red;
@@ -79,11 +92,10 @@ namespace MobileApp
                 NotificifationLabel.TextColor = Color.Red;
                 return;
             }
-
+            System.Diagnostics.Debug.WriteLine(stopwatch.Elapsed);
             string result = await response.Content.ReadAsStringAsync();
 
             LoginResponse LoginResult_Converted = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginResponse>(result);
-            System.Diagnostics.Debug.WriteLine(result);
             if(LoginResult_Converted.Status == 2)
             {
                 NotificifationLabel.Text = "Logging in failed";
@@ -96,7 +108,11 @@ namespace MobileApp
                 //await Navigation.PushAsync(new Page1());
                 App.Guid = LoginResult_Converted.guid;
                 App.Account = LoginResult_Converted.Account;
-                Application.Current.MainPage = new Page1();
+                
+                System.Diagnostics.Debug.WriteLine(stopwatch.Elapsed);
+                stopwatch.Stop();
+                App.accPage = new Pages.AccountPage();
+                Application.Current.MainPage = App.accPage;
             }
         }
 

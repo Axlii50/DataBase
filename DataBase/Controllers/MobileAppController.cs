@@ -48,7 +48,7 @@ namespace DataBase.Controllers
                 {
                     guid = guid,
                     Status = 1,
-                    Account = accountModel
+                    Account = accountModel//nullifi login and password for sending respond bcs i want to avoid sendind such informations 
                 });
 
             }
@@ -77,6 +77,11 @@ namespace DataBase.Controllers
                 {
                     var Image = System.IO.File.OpenRead(fullPath);
                     return File(Image,"image/jpeg");
+                }
+                else
+                {
+                    var Image = System.IO.File.OpenRead(filePath+"no-Image-Found.jpg");
+                    return File(Image, "image/jpeg");
                 }
             }
 
@@ -128,6 +133,16 @@ namespace DataBase.Controllers
             // instead of sending whole json jobs send only Id of all jobs and then later get job by their id 
             //but i think thats pointless and only complicates code more than its needed 
             return Json(Jobs);
+        }
+
+        [HttpGet]
+        [Produces("application/json")]
+        public IActionResult GetJob([Bind("GUID,JobId")]string GUID, string JobId)
+        {
+#if !DEBUG
+            if (Startup.AuthorizedGuids.Find(x => x.Guid == GUID) == null) return Unauthorized();
+#endif
+            return Json(_context.JobModel.FirstOrDefault(x => x.JobId == JobId));
         }
     }
 }
