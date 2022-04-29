@@ -55,9 +55,11 @@ namespace MobileApp
                 NotificifationLabel.Text = "Logging in";
                 NotificifationLabel.TextColor = Color.Green;
             }
+            //encrypt data
             System.Diagnostics.Debug.WriteLine(stopwatch.Elapsed);
             Droid.Cryptography.EncryptLoginModel(ref LoginData);
 
+            //create object for POST request 
             var values = new Dictionary<string, string>
              {
                 { "Login", LoginData.Login },
@@ -74,12 +76,10 @@ namespace MobileApp
             }
             catch (Exception exc)
             {
-                
+                throw;
             };
             System.Diagnostics.Debug.WriteLine(stopwatch.Elapsed);
            
-            //Thread.Sleep(500);
-
             if (response == null)
             {
                 NotificifationLabel.Text = "Error while connecting to service";
@@ -111,6 +111,7 @@ namespace MobileApp
                 
                 System.Diagnostics.Debug.WriteLine(stopwatch.Elapsed);
                 stopwatch.Stop();
+                //send to Account Page after logged in 
                 App.accPage = new Pages.AccountPage();
                 Application.Current.MainPage = App.accPage;
             }

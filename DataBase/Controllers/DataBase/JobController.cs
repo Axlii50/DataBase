@@ -45,6 +45,7 @@ namespace DataBase_Website.Controllers.DataBase
         {
             if (ModelState.IsValid)
             {
+                //prepare all data to be uploaded to DATABASE and make sure is valid
                 JobModel.AssignedAccounts = JobModel.AssignedAccounts.Remove(0, 1);
                 if (JobModel.AssignedAccounts[JobModel.AssignedAccounts.Length-1] == ':')
                     JobModel.AssignedAccounts = JobModel.AssignedAccounts.Remove(JobModel.AssignedAccounts.Length - 1, 1);
@@ -67,13 +68,17 @@ namespace DataBase_Website.Controllers.DataBase
             List<string> Files = new List<string>();
             foreach(IFormFile x in Request.Form.Files)
             {
+                //get name of file to upload from IFORMFILE 
                 string filename = ContentDispositionHeaderValue.Parse(x.ContentDisposition).FileName.Trim('"');
-
+                
+                //make sure file is in correct format
                 filename = this.EnsureCorrectFilename(filename);
 
+                //copy file to specyfic location on server
                 using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename)))
                     await x.CopyToAsync(output);
 
+                //add file to list of files
                 Files.Add(x.FileName);
             }
 
