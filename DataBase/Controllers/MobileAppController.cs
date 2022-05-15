@@ -1,4 +1,5 @@
-﻿using DataBase_Website.Data;
+﻿using DataBase.Models;
+using DataBase_Website.Data;
 using DataBase_Website.Models.DataBaseModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -31,28 +32,25 @@ namespace DataBase.Controllers
         /// <returns></returns>
         [HttpPost]
         [Produces("application/json")]
-        public JsonResult Login([Bind("Login,Password")] LoginModel requestdata)
+        public Microsoft.AspNetCore.Mvc.JsonResult Login([Bind("Login,Password")] LoginModel requestdata)
         {
             //Decrypt sended data 
             DataBase.Cryptography.DecryptLoginModel(ref requestdata);
 
             string guid = Guid.NewGuid().ToString();
-            DataBase_Website.Models.DataBaseModels.AccountModel accountModel = _context.AccountModel
+            AccountModel accountModel = _context.AccountModel
                 .FirstOrDefault(acc => acc.Login == requestdata.Login && acc.Password == requestdata.Password);
-            if (accountModel != null)
+
+            if (accountModel != null) return Json(new Models.JsonResult { guid = "null", Status = 2 });
+
+            Startup.AuthorizedGuids.Add(new Models.GuidEntity { Guid = guid, Created = DateTime.Now.AddHours(1) });
+
+            return Json(new Models.JsonResult
             {
-                Startup.AuthorizedGuids.Add(new Models.GuidEntity { Guid = guid, Created = DateTime.Now.AddHours(1) });
-
-                foreach (Models.GuidEntity c in Startup.AuthorizedGuids)
-                return Json(new Models.JsonResult
-                {
-                    guid = guid,
-                    Status = 1,
-                    Account = accountModel//nullifi login and password for sending respond bcs i want to avoid sendind such informations 
-                });
-
-            }
-            return Json(new Models.JsonResult { guid = "null", Status = 2});
+                guid = guid,
+                Status = 1,
+                Account = accountModel//nullifi login and password for sending respond bcs i want to avoid sendind such informations 
+            });
         }
 
 
@@ -69,23 +67,18 @@ namespace DataBase.Controllers
 
             if (Startup.AuthorizedGuids.Find(x => x.Guid == GUID) == null) return Unauthorized();
 
-            if (!string.IsNullOrEmpty(fileName))
-            {
-                string filePath = "/Images/";
-                string fullPath = AppDomain.CurrentDomain.BaseDirectory + filePath + "/" + fileName;
-                if (System.IO.File.Exists(fullPath))
-                {
-                    var Image = System.IO.File.OpenRead(fullPath);
-                    return File(Image,"image/jpeg");
-                }
-                else
-                {
-                    var Image = System.IO.File.OpenRead(filePath+"no-Image-Found.jpg");
-                    return File(Image, "image/jpeg");
-                }
-            }
+            if (!string.IsNullOrEmpty(fileName)) return NotFound();
 
-            return NotFound();
+            string filePath = "/Images/";
+            string fullPath = AppDomain.CurrentDomain.BaseDirectory + filePath + "/" + fileName;
+            FileStream Image = null;
+
+            if (System.IO.File.Exists(fullPath))
+                Image = System.IO.File.OpenRead(fullPath);
+            else
+                Image = System.IO.File.OpenRead(filePath + "no-Image-Found.jpg");
+
+            return File(Image, "image/jpeg");
         }
 
         /// <summary>
@@ -93,11 +86,11 @@ namespace DataBase.Controllers
         /// </summary>
         public void UpdateGuids()
         {
-            List<Models.GuidEntity> expired = new List<Models.GuidEntity>();
-            foreach (Models.GuidEntity x in Startup.AuthorizedGuids)
+            List<GuidEntity> expired = new List<GuidEntity>();
+            foreach (GuidEntity x in Startup.AuthorizedGuids)
                 if (IsExpired(x.Created))
                     expired.Add(x);
-            foreach (Models.GuidEntity x in expired)
+            foreach (GuidEntity x in expired)
                 Startup.AuthorizedGuids.Remove(x);
         }
 
