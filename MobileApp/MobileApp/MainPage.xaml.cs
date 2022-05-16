@@ -22,7 +22,6 @@ namespace MobileApp
 
         protected override bool OnBackButtonPressed()
         {
-            
             return base.OnBackButtonPressed();
         }
 
@@ -30,9 +29,6 @@ namespace MobileApp
         HttpClient client;
         private async void  Button_Clicked(object sender, EventArgs e)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-
             client = new HttpClient();
 
             Droid.LoginModel LoginData = new Droid.LoginModel() 
@@ -56,7 +52,6 @@ namespace MobileApp
                 NotificifationLabel.TextColor = Color.Green;
             }
             //encrypt data
-            System.Diagnostics.Debug.WriteLine(stopwatch.Elapsed);
             Droid.Cryptography.EncryptLoginModel(ref LoginData);
 
             //create object for POST request 
@@ -78,7 +73,6 @@ namespace MobileApp
             {
                 throw;
             };
-            System.Diagnostics.Debug.WriteLine(stopwatch.Elapsed);
            
             if (response == null)
             {
@@ -92,7 +86,6 @@ namespace MobileApp
                 NotificifationLabel.TextColor = Color.Red;
                 return;
             }
-            System.Diagnostics.Debug.WriteLine(stopwatch.Elapsed);
             string result = await response.Content.ReadAsStringAsync();
 
             LoginResponse LoginResult_Converted = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginResponse>(result);
@@ -105,12 +98,9 @@ namespace MobileApp
             }
             else
             {
-                //await Navigation.PushAsync(new Page1());
                 App.Guid = LoginResult_Converted.guid;
                 App.Account = LoginResult_Converted.Account;
                 
-                System.Diagnostics.Debug.WriteLine(stopwatch.Elapsed);
-                stopwatch.Stop();
                 //send to Account Page after logged in 
                 App.accPage = new Pages.AccountPage();
                 Application.Current.MainPage = App.accPage;
