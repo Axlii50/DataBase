@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -69,8 +70,10 @@ namespace DataBase_Website.Controllers.DataBase
             foreach(IFormFile x in Request.Form.Files)
             {
                 //get name of file to upload from IFORMFILE 
-                string filename = ContentDispositionHeaderValue.Parse(x.ContentDisposition).FileName.Trim('"');
-                
+                //string filename = ContentDispositionHeaderValue.Parse(x.ContentDisposition).FileName.Trim('"');
+                //set Unique name for file
+                string filename = Guid.NewGuid().ToString();
+                System.Diagnostics.Debug.WriteLine(filename);
                 //make sure file is in correct format
                 filename = this.EnsureCorrectFilename(filename);
 

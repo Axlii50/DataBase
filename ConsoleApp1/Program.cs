@@ -20,7 +20,7 @@ namespace ConsoleApp1
             };
 
 
-            CryptoGraphy.EncryptLoginModel(ref LoginData);
+            //CryptoGraphy.EncryptLoginModel(ref LoginData);
 
             Console.WriteLine(LoginData.Login);
             Console.WriteLine(LoginData.Password);
