@@ -16,3 +16,10 @@ Dzia³anie aplikacji mobilnej - dzia³a ale wygl¹d pozostawia wiele do zyczenia
 
 Jakieœ animacje w appce by pokazac uzytkownikowi ze aplikacja dzia³a
 
+
+
+Edytowanie Profili
+
+Randomowa nazwa dla plików po wrzuceniu 
+
+

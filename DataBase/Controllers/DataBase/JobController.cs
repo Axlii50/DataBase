@@ -81,7 +81,6 @@ namespace DataBase_Website.Controllers.DataBase
                 //add file to list of files
                 Files.Add(x.FileName);
             }
-
             return PartialView("ItemPartial", Files.ToArray());
         }
 

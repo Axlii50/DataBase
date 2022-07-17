@@ -103,7 +103,8 @@
                 $.ajax({
                     url: '/Job/AddFile', //URL to upload files
                     type: "POST", //as we will be posting files and other method POST is used
-                    processData: false, //remember to set processData and ContentType to false, otherwise you may get an error
+                    processData: false, //remember to set processData and ContentType to false,
+                    //otherwise you may get an error
                     contentType: false,
                     data: fileData,
                     success: function (result) {
