@@ -1,4 +1,4 @@
-<h3 align="left">A small project created for educational and entertaining purpos </br>
+<h3 align="left">A small project created for educational and entertaining purpos using Asp.net MVC Entity-FrameWork </br>
  currently project contains app for Android and server side with website for database management </br>
  im trying to create both side of project(server and client) as intuitive as possible and with this in minde of course safe to use </br>
  currently all request from android app to server and from server to client are encrypted 
